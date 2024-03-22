@@ -62,6 +62,11 @@ export function useToast({ defaultOptions }: UseToastParams) {
     options.onHide();
   }, [clearTimer, log, options]);
 
+  const unmount = React.useCallback(() => {
+    log('Unmounting');
+    setOptions(initialOptions)
+  }, [initialOptions, log]);
+
   const show = React.useCallback(
     (params: ToastShowParams) => {
       log(`Showing with params: ${JSON.stringify(params)}`);
@@ -133,6 +138,7 @@ export function useToast({ defaultOptions }: UseToastParams) {
     data,
     options,
     show,
-    hide
+    hide,
+    unmount
   };
 }

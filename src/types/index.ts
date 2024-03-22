@@ -113,6 +113,8 @@ export type ToastShowParams = ToastData & ToastOptions;
 
 export type ToastHideParams = void;
 
+export type ToastUnmountParams = void;
+
 export type BaseToastProps = {
   text1?: string;
   text2?: string;
@@ -142,6 +144,7 @@ export type ToastConfigParams<Props> = {
   text2Style?: StyleProp<TextStyle>;
   show: (params: ToastShowParams) => void;
   hide: (params: ToastHideParams) => void;
+  unmount: (params: ToastUnmountParams) => void;
   onPress: () => void;
   props: Props;
 };
@@ -153,6 +156,7 @@ export type ToastConfig = {
 export type ToastRef = {
   show: (params: ToastShowParams) => void;
   hide: (params: ToastHideParams) => void;
+  unmount: (params: ToastUnmountParams) => void;
 };
 
 /**
