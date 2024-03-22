@@ -9,7 +9,8 @@ import {
   ToastData,
   ToastHideParams,
   ToastOptions,
-  ToastShowParams
+  ToastShowParams,
+  ToastUnmountParams
 } from './types';
 
 export type ToastUIProps = {
@@ -18,6 +19,7 @@ export type ToastUIProps = {
   data: ToastData;
   show: (params: ToastShowParams) => void;
   hide: (params: ToastHideParams) => void;
+  unmount: (params: ToastUnmountParams) => void;
   config?: ToastConfig;
 };
 
@@ -33,7 +35,8 @@ function renderComponent({
   config,
   isVisible,
   show,
-  hide
+  hide,
+  unmount
 }: ToastUIProps) {
   const { text1, text2 } = data;
   const { type, onPress, text1Style, text2Style, position, props } = options;
@@ -60,6 +63,7 @@ function renderComponent({
     text2Style,
     show,
     hide,
+    unmount,
     onPress,
     props
   });
