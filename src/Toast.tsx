@@ -6,13 +6,14 @@ import {
   ToastHideParams,
   ToastProps,
   ToastRef,
-  ToastShowParams
+  ToastShowParams,
+  ToastUnmountParams
 } from './types';
 import { useToast } from './useToast';
 
 const ToastRoot = React.forwardRef((props: ToastProps, ref) => {
   const { config, ...defaultOptions } = props;
-  const { show, hide, isVisible, options, data } = useToast({
+  const { show, hide, unmount, isVisible, options, data } = useToast({
     defaultOptions
   });
 
@@ -22,9 +23,10 @@ const ToastRoot = React.forwardRef((props: ToastProps, ref) => {
     React.useCallback(
       () => ({
         show,
-        hide
+        hide,
+        unmount
       }),
-      [hide, show]
+      [hide, show, unmount]
     )
   );
 
@@ -35,6 +37,7 @@ const ToastRoot = React.forwardRef((props: ToastProps, ref) => {
       data={data}
       hide={hide}
       show={show}
+      unmount={unmount}
       config={config}
     />
   );
@@ -86,8 +89,10 @@ export function Toast(props: ToastProps) {
     }
   }, []);
 
+  const { enableLogs } = props
+
   return (
-    <LoggerProvider enableLogs={false}>
+    <LoggerProvider enableLogs={!!enableLogs}>
       <ToastRoot ref={setRef} {...props} />
     </LoggerProvider>
   );
@@ -125,4 +130,8 @@ Toast.show = (params: ToastShowParams) => {
 
 Toast.hide = (params?: ToastHideParams) => {
   getRef()?.hide(params);
+};
+
+Toast.unmount = (params?: ToastUnmountParams) => {
+  getRef()?.unmount(params);
 };

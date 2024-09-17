@@ -9,7 +9,8 @@ import {
   ToastData,
   ToastHideParams,
   ToastOptions,
-  ToastShowParams
+  ToastShowParams,
+  ToastUnmountParams
 } from './types';
 
 export type ToastUIProps = {
@@ -18,6 +19,7 @@ export type ToastUIProps = {
   data: ToastData;
   show: (params: ToastShowParams) => void;
   hide: (params: ToastHideParams) => void;
+  unmount: (params: ToastUnmountParams) => void;
   config?: ToastConfig;
 };
 
@@ -33,10 +35,10 @@ function renderComponent({
   config,
   isVisible,
   show,
-  hide
+  hide,
+  unmount
 }: ToastUIProps) {
-  const { text1, text2 } = data;
-  const { type, onPress, text1Style, text2Style, position, props } = options;
+  const { type } = options;
 
   const toastConfig = {
     ...defaultToastConfig,
@@ -49,25 +51,12 @@ function renderComponent({
       `Toast type: '${type}' does not exist. You can add it via the 'config' prop on the Toast instance. Learn more: https://github.com/calintamas/react-native-toast-message/blob/master/README.md`
     );
   }
-
-  return ToastComponent({
-    position,
-    type,
-    isVisible,
-    text1,
-    text2,
-    text1Style,
-    text2Style,
-    show,
-    hide,
-    onPress,
-    props
-  });
+  return <ToastComponent {...options} {...data} isVisible={isVisible} show={show} hide={hide} unmount={unmount} />;
 }
 
 export function ToastUI(props: ToastUIProps) {
   const { isVisible, options, hide } = props;
-  const { position, topOffset, bottomOffset, keyboardOffset, swipeable } = options;
+  const { position, topOffset, bottomOffset, keyboardOffset, swipeable, translateYFactor, animationProps } = options;
 
   return (
     <AnimatedContainer
@@ -77,6 +66,8 @@ export function ToastUI(props: ToastUIProps) {
       bottomOffset={bottomOffset}
       keyboardOffset={keyboardOffset}
       swipeable={swipeable}
+      translateYFactor={translateYFactor}
+      animationProps={animationProps}
       onHide={hide}>
       {renderComponent(props)}
     </AnimatedContainer>
